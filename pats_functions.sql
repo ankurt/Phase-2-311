@@ -6,7 +6,6 @@
 -- calculate_total_costs
 -- (associated with two triggers: update_total_costs_for_medicines_changes & update_total_costs_for_treatments_changes)
 
-----6----
 CREATE OR REPLACE function calculate_total_costs(visit INT) RETURNS INT AS $$
     DECLARE
         total INT;
@@ -25,11 +24,16 @@ CREATE OR REPLACE function calculate_total_costs(visit INT) RETURNS INT AS $$
 
 $$ language 'plpgsql';
 
+CREATE TRIGGER update_total_costs_for_medicines_changes
+AFTER UPDATE ON medicine_costs
+EXECUTE PROCEDURE calculate_total_costs(visits.id);
 
+CREATE TRIGGER update_total_costs_for_treatments_changes
+AFTER UPDATE ON procedure_costs
+EXECUTE PROCEDURE calculate_total_costs(visits.id);
 
 -- calculate_overnight_stay
 -- (associated with a trigger: update_overnight_stay_flag)
-
 
 
 
