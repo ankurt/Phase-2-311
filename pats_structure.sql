@@ -19,7 +19,6 @@ CREATE TABLE pets (
   id SERIAL NOT NULL,
   name VARCHAR(100) NOT NULL,
   female BOOLEAN NOT NULL,
-  name VARCHAR(100) NOT NULL,
   date_of_birth DATE,
   active BOOLEAN NOT NULL
 );
