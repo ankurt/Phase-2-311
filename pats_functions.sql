@@ -25,7 +25,6 @@ CREATE OR REPLACE function calculate_total_costs(visit INT) RETURNS INT AS $$
 $$ language 'plpgsql';
 
 
-
 -- calculate_overnight_stay
 -- (associated with a trigger: update_overnight_stay_flag)
 CREATE OR REPLACE function calculate_overnight_stay(id SERIAL) RETURNS TRIGGER AS $$
