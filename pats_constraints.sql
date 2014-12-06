@@ -29,10 +29,53 @@ ALTER TABLE notes ADD CONSTRAINT note_user_fkey FOREIGN KEY(user_id) REFERENCES 
 
 ALTER TABLE owners ADD CONSTRAINT validate_email CHECK (email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$');
 
-ALTER TABLE owners ADD CONSTRAINT validate_phone CHECK (phone)
+ALTER TABLE owners ADD CONSTRAINT validate_phone CHECK (phone ~* '/\A(\d{10}|\(?\d{3}\)?[-. ]\d{3}[-.]\d{4})\z/'); 
+
+ALTER TABLE pets ADD CONSTRAINT validate_birthday CHECK (date_of_birth <= DATE.current);
+
+ALTER TABLE visits ADD CONSTRAINT validate_date CHECK (date <= DATE.current);
 
 ALTER TABLE visits ADD CONSTRAINT validate_weight CHECK (weight > 0);
 
-ALTER TABLE 
+ALTER TABLE medicine_costs ADD CONSTRAINT validate_start_date CHECK (start_date <= DATE.current);
+
+ALTER TABLE medicine_costs ADD CONSTRAINT validate_cost_per_unit CHECK (cost_per_unit >= 0);
+
+ALTER TABLE procedures ADD CONSTRAINT validate_time CHECK (length_of_time > 0);
+
+ALTER TABLE visit_medicines ADD CONSTRAINT validate_visit_discount CHECK (discount >= 0);
+
+ALTER TABLE treatments ADD CONSTRAINT validate_treatment_discount CHECK (discount >= 0);
+
+ALTER TABLE procedure_costs ADD CONSTRAINT validate_procedure_cost CHECK (cost >= 0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
