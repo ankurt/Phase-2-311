@@ -1,6 +1,6 @@
 -- CONSTRAINTS FOR PATS DATABASE
 --
--- by (student_1) & (student_2)
+-- by (klouie) & (ankurt)
 --
 ----FOREIGN KEYS--
 ALTER TABLE pets ADD CONSTRAINT pet_animal_fkey FOREIGN KEY(animal_id) REFERENCES animals (id) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -41,3 +41,4 @@ ALTER TABLE
 ALTER TABLE medicine_costs ALTER DOMAIN end_date SET DEFAULT NULL;
 
 ALTER TABLE procedure_costs ALTER DOMAIN end_date SET DEFAULT NULL;
+
