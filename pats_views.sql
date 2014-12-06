@@ -11,7 +11,11 @@ create view owners_view as
 	from owners join pets using (owner_id) join visits using (pet_id);
 
 create view medicine_views as 
-	select medicines.name, medicines.description, medicines.stock_amount, medicines.method, 
+	select medicines.name, medicines.description, medicines.stock_amount, medicines.method, medicines.unit, 
+		medicines.vaccine, medicine_costs.cost_per_unit AS "Current Cost", medicine_costs.end_date AS "Last Changed",
+		animals.name, animals.active
+	from medicines join medicine_costs using (medicine_id) join animal_medicines using (medicine_id)
+		join animals using (animal_id);
 
 --The second view is to be called 'medicine_views' and connects information from the medicine, 
 --animal and cost tables together. This view should also replace animal_id with the animal name. 

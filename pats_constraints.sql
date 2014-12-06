@@ -36,9 +36,3 @@ ALTER TABLE visits ADD CONSTRAINT validate_weight CHECK (weight > 0);
 ALTER TABLE 
 
 
---NULL VALUES--
-
-ALTER TABLE medicine_costs ALTER DOMAIN end_date SET DEFAULT NULL;
-
-ALTER TABLE procedure_costs ALTER DOMAIN end_date SET DEFAULT NULL;
-
