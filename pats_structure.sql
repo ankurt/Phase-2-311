@@ -49,3 +49,70 @@ CREATE TABLE medicines (
   unit VARCHAR(100),
   vaccine BOOLEAN
 );
+
+CREATE TABLE medicine_costs(
+  id SERIAL,
+  -- medicine_id INT
+  cost_per_unit INT,
+  start_date DATE,
+  end_date DATE
+);
+
+CREATE TABLE animal_medicines(
+  id SERIAL,
+  -- animal_id INT,
+  -- medicine_id INT,
+  recommended_num_of_units INT
+);
+
+CREATE TABLE visit_medicines(
+  id SERIAL,
+  visit_id INT,
+  medicine_id INT,
+  units_given INT,
+  discount INT
+);
+
+CREATE TABLE procedures(
+  id SERIAL,
+  name VARCHAR(100),
+  description VARCHAR(255),
+  length_of_time INT,
+  active BOOLEAN
+);
+
+CREATE TABLE treatments(
+  id SERIAL,
+  visit_id INT
+  -- procedure_id INT,
+  successful BOOLEAN,
+  discount INT
+);
+
+CREATE TABLE procedure_costs(
+  id SERIAL,
+  -- procedure_id INT,
+  cost INT,
+  start_date DATE,
+  end_date DATE
+);
+
+CREATE TABLE notes(
+id SERIAL,
+notable_type,
+-- notable_id INT,
+title VARCHAR(100),
+content TEXT,
+-- user_id INT,
+date DATE
+);
+
+CREATE TABLE users(
+  id SERIAL
+  first_name VARCHAR(100),
+  last_name VARCHAR(100),
+  role VARCHAR(50),
+  username VARCHAR(50),
+  password_digest VARCHAR(255),
+  active BOOLEAN
+);
