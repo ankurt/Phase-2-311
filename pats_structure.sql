@@ -3,101 +3,106 @@
 -- by (student_1) & (student_2)
 --
 CREATE TABLE owners (
-  id SERIAL,
-  first_name VARCHAR(100),
-  last_name VARCHAR(100),
-  street VARCHAR(100),
-  city VARCHAR(100),
-  state VARCHAR(2),
-  zip VARCHAR(15),
+  id SERIAL NOT NULL,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  street VARCHAR(100) NOT NULL,
+  city VARCHAR(100) NOT NULL,
+  state VARCHAR(2) NOT NULL,
+  zip VARCHAR(15) NOT NULL,
   phone VARCHAR(10),
   email VARCHAR(100),
-  active BOOLEAN
+  active BOOLEAN NOT NULL
 );
 
 CREATE TABLE pets (
-  id SERIAL,
+<<<<<<< HEAD
+  id SERIAL NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  female BOOLEAN NOT NULL,
   name VARCHAR(100),
-  animal_id INT references animals(id),
-  owner_id INT references owners(id),
   female BOOLEAN,
   date_of_birth DATE,
-  active BOOLEAN
+  active BOOLEAN NOT NULL
 );
 
 CREATE TABLE visits (
-  id SERIAL,
-  pet_id INT references visits(id),
-  date DATE,
+  id SERIAL NOT NULL,
+  date DATE NOT NULL,
   weight INT,
-  overnight_stay BOOLEAN,
-  total_charge INT
+  overnight_stay BOOLEAN NOT NULL,
+  total_charge INT NOT NULL
 );
 
 CREATE TABLE animals (
-  id SERIAL,
-  name VARCHAR(100),
-  active BOOLEAN
+  id SERIAL NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  active BOOLEAN NOT NULL
   );
 
 CREATE TABLE medicines (
-  id SERIAL,
-  name VARCHAR(100),
-  description TEXT,
-  stock_amount INT,
-  method VARCHAR(100),
-  unit VARCHAR(100),
-  vaccine BOOLEAN
+  id SERIAL NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  description TEXT NOT NULL,
+  stock_amount INT NOT NULL,
+  method VARCHAR(100) NOT NULL,
+  unit VARCHAR(100) NOT NULL,
+  vaccine BOOLEAN NOT NULL
 );
 
 CREATE TABLE medicine_costs(
-  id SERIAL,
-  medicine_id INT references medinces(id),
-  cost_per_unit INT,
-  start_date DATE,
+  id SERIAL NOT NULL,
+  cost_per_unit INT NOT NULL,
+  start_date DATE NOT NULL,
+  cost_per_unit INT NOT NULL,
+  start_date DATE NOT NULL, 
   end_date DATE
 );
 
 CREATE TABLE animal_medicines(
-  id SERIAL,
-  animal_id INT references animal(id),
-  medicine_id INT references medicine(id),
-  recommended_num_of_units INT
+  id SERIAL NOT NULL,
+  recommended_num_of_units INT NOT NULL,
 );
 
 CREATE TABLE visit_medicines(
-  id SERIAL,
-  visit_id INT,
-  medicine_id INT,
-  units_given INT,
-  discount NUMERIC(3, 2)
+  id SERIAL NOT NULL,
+  visit_id INT NOT NULL,
+  medicine_id INT NOT NULL,
+  units_given INT NOT NULL,
+  discount NUMERIC(3, 2) NOT NULL
 );
 
 CREATE TABLE procedures(
-  id SERIAL,
-  name VARCHAR(100),
+  id SERIAL NOT NULL,
+  name VARCHAR(100) NOT NULL,
   description VARCHAR(255),
-  length_of_time INT,
-  active BOOLEAN
+  length_of_time INT NOT NULL,
+  active BOOLEAN NOT NULL
 );
 
 CREATE TABLE treatments(
-  id SERIAL,
-  visit_id INT
-  procedure_id INT references procedures(id),
+<<<<<<< HEAD
+  id SERIAL NOT NULL,
   successful BOOLEAN,
-  discount NUMERIC(3, 2)
+  discount NUMERIC(3, 2) NOT NULL
 );
 
 CREATE TABLE procedure_costs(
-  id SERIAL,
-  procedure_id INT references procedures(id),
-  cost INT,
-  start_date DATE,
+  id SERIAL NOT NULL,
+  cost INT NOT NULL,
+  start_date DATE NOT NULL,
+  cost INT NOT NULL,
+  start_date DATE NOT NULL,
   end_date DATE
 );
 
 CREATE TABLE notes(
+id SERIAL NOT NULL,
+notable_type VARCHAR(100) NOT NULL,
+notable_id INT NOT NULL,
+title VARCHAR(100) NOT NULL,
+content TEXT NOT NULL,
+date DATE NOT NULL
 id SERIAL,
 notable_type,
 notable_id INT references ???,
@@ -108,11 +113,11 @@ date DATE
 );
 
 CREATE TABLE users(
-  id SERIAL
-  first_name VARCHAR(100),
-  last_name VARCHAR(100),
-  role VARCHAR(50),
-  username VARCHAR(50),
-  password_digest VARCHAR(255),
-  active BOOLEAN
+  id SERIAL NOT NULL
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  role VARCHAR(50) NOT NULL,
+  username VARCHAR(50) NOT NULL,
+  password_digest VARCHAR(255) NOT NULL,
+  active BOOLEAN NOT NULL
 );
