@@ -1,6 +1,6 @@
 -- FUNCTIONS AND TRIGGERS FOR PATS DATABASE
 --
--- by (student_1) & (student_2)
+-- by atoshniw & klouie
 --
 --
 -- calculate_total_costs
@@ -40,13 +40,24 @@ EXECUTE PROCEDURE calculate_total_costs(visits.id);
 -- set_end_date_for_medicine_costs
 -- (associated with a trigger: set_end_date_for_previous_medicine_cost)
 
+CREATE OR REPLACE function set_end_date_for_previous_medicine_cost() RETURNS DATE AS $$
+    DECLARE
+        previous_ed DATE;
+    BEGIN
+        previous_ed = SELECT();
+        previous_ed.end_date = current_date;
+        RETURN previous_ed;
+    END;
 
+$$ language 'plpgsql';
+
+CREATE TRIGGER set_end_date_for_previous_procedure_cost
+AFTER 
+EXECUTE PROCEDURE set_end_date_for_previous_medicine_cost();
 
 
 -- set_end_date_for_procedure_costs
 -- (associated with a trigger: set_end_date_for_previous_procedure_cost)
-
-
 
 
 -- decrease_stock_amount_after_dosage
