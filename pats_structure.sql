@@ -18,8 +18,8 @@ CREATE TABLE owners (
 CREATE TABLE pets (
   id SERIAL,
   name VARCHAR(100),
-  -- animal_id INT,
-  -- owner_id INT,
+  animal_id INT references animals(id),
+  owner_id INT references owners(id),
   female BOOLEAN,
   date_of_birth DATE,
   active BOOLEAN
@@ -27,7 +27,7 @@ CREATE TABLE pets (
 
 CREATE TABLE visits (
   id SERIAL,
-  -- pet_id INT,
+  pet_id INT references visits(id),
   date DATE,
   weight INT,
   overnight_stay BOOLEAN,
@@ -52,7 +52,7 @@ CREATE TABLE medicines (
 
 CREATE TABLE medicine_costs(
   id SERIAL,
-  -- medicine_id INT
+  medicine_id INT references medinces(id),
   cost_per_unit INT,
   start_date DATE,
   end_date DATE
@@ -60,8 +60,8 @@ CREATE TABLE medicine_costs(
 
 CREATE TABLE animal_medicines(
   id SERIAL,
-  -- animal_id INT,
-  -- medicine_id INT,
+  animal_id INT references animal(id),
+  medicine_id INT references medicine(id),
   recommended_num_of_units INT
 );
 
@@ -84,14 +84,14 @@ CREATE TABLE procedures(
 CREATE TABLE treatments(
   id SERIAL,
   visit_id INT
-  -- procedure_id INT,
+  procedure_id INT references procedures(id),
   successful BOOLEAN,
   discount NUMERIC(3, 2)
 );
 
 CREATE TABLE procedure_costs(
   id SERIAL,
-  -- procedure_id INT,
+  procedure_id INT references procedures(id),
   cost INT,
   start_date DATE,
   end_date DATE
@@ -100,10 +100,10 @@ CREATE TABLE procedure_costs(
 CREATE TABLE notes(
 id SERIAL,
 notable_type,
--- notable_id INT,
+notable_id INT references ???,
 title VARCHAR(100),
 content TEXT,
--- user_id INT,
+user_id INT references users(id),
 date DATE
 );
 
