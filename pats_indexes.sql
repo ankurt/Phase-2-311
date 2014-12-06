@@ -1,5 +1,6 @@
 -- INDEXES FOR PATS DATABASE
 --
--- by (student_1) & (student_2)
+-- by (klouie) & (ankurt)
 --
 --
+CREATE INDEX 

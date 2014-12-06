@@ -58,7 +58,7 @@ CREATE TABLE medicine_costs(
 
 CREATE TABLE animal_medicines(
   id SERIAL NOT NULL,
-  recommended_num_of_units INT NOT NULL,
+  recommended_num_of_units INT NOT NULL
 );
 
 CREATE TABLE visit_medicines(
@@ -100,7 +100,7 @@ CREATE TABLE notes(
 );
 
 CREATE TABLE users(
-  id SERIAL NOT NULL
+  id SERIAL NOT NULL,
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
   role VARCHAR(50) NOT NULL,

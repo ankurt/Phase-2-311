@@ -1,6 +1,6 @@
 -- FUNCTIONS AND TRIGGERS FOR PATS DATABASE
 --
--- by atoshniw & klouie
+-- by (klouie) & (ankurt)
 --
 --
 -- calculate_total_costs
@@ -34,8 +34,26 @@ EXECUTE PROCEDURE calculate_total_costs(visits.id);
 
 -- calculate_overnight_stay
 -- (associated with a trigger: update_overnight_stay_flag)
+CREATE OR REPLACE function calculate_overnight_stay(id SERIAL) RETURNS TRIGGER AS $$
+	DECLARE
+		procedure_time INT;
+	BEGIN 
+		procedure_time = (SELECT SUM(procedures.length_of_time) FROM procedures 
+			JOIN treatments ON procedures.id = treatments.procedure_id 
+			JOIN visits ON treatments.visit_id = visits.id
+			WHERE visits.id = id);
+		IF procedure_time > 720 THEN
+			UPDATE visits SET overnight_stay = true;
+		ELSE
+			UPDATE visits SET overnight_stay = false;
+		END IF;
+		RETURN NULL;
+	END;
+$$ language 'plpgsql';
 
-
+CREATE TRIGGER update_overnight_stay_flag
+AFTER UPDATE ON visits
+EXECUTE PROCEDURE calculate_overnight_stay(visits.id);
 
 -- set_end_date_for_medicine_costs
 -- (associated with a trigger: set_end_date_for_previous_medicine_cost)
