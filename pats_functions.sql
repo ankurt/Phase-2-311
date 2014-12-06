@@ -6,6 +6,21 @@
 -- calculate_total_costs
 -- (associated with two triggers: update_total_costs_for_medicines_changes & update_total_costs_for_treatments_changes)
 
+----6----
+CREATE OR REPLACE function calculate_total_costs(visit VARCHAR(255)) RETURNS INT AS $$
+    DECLARE
+        total INT;
+        medicines_cost INT;
+        procedures_cost INT;
+    BEGIN
+            procedures_cost = (SELECT SUM(pc.cost * (1 - t.discount)) FROM procedure_costs pc JOIN procedures p ON pc.procedure_id = p.id 
+                                JOIN treatments t ON p.id = t.procedure_id JOIN visits v ON t.visit_id = v.id WHERE visit.id = visit);
+            medicines_cost = (SELECT SUM(mc.cost *  (1- t.discount)))
+            UPDATE visits SET total_charge = total;
+        RETURN total;
+    END;
+
+$$ language 'plpgsql';
 
 
 
