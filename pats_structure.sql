@@ -1,6 +1,6 @@
 -- TABLE STRUCTURE FOR PATS DATABASE
 --
--- by (student_1) & (student_2)
+-- by atoshniw & klouie
 --
 CREATE TABLE owners (
   id SERIAL NOT NULL,
