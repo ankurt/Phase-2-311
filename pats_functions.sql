@@ -49,9 +49,6 @@ AFTER UPDATE ON visits
 EXECUTE PROCEDURE calculate_overnight_stay(visits.id);
 
 
-
-
-
 -- set_end_date_for_medicine_costs
 -- (associated with a trigger: set_end_date_for_previous_medicine_cost)
 
