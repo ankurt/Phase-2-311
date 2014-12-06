@@ -10,7 +10,7 @@ CREATE TABLE owners (
   city VARCHAR(100),
   state VARCHAR(2),
   zip VARCHAR(15),
-  phone VARCHAR(20),
+  phone VARCHAR(10),
   email VARCHAR(100),
   active BOOLEAN
 );
@@ -70,7 +70,7 @@ CREATE TABLE visit_medicines(
   visit_id INT,
   medicine_id INT,
   units_given INT,
-  discount INT
+  discount NUMERIC(3, 2)
 );
 
 CREATE TABLE procedures(
@@ -86,7 +86,7 @@ CREATE TABLE treatments(
   visit_id INT
   -- procedure_id INT,
   successful BOOLEAN,
-  discount INT
+  discount NUMERIC(3, 2)
 );
 
 CREATE TABLE procedure_costs(
