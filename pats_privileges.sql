@@ -4,6 +4,7 @@
 --
 --
 -- SQL needed to create the pats user
+CREATE USERS 
 GRANT CREATE ON pats to pats;
 
 

@@ -62,7 +62,7 @@ CREATE TABLE animal_medicines(
   id SERIAL NOT NULL,
   animal_id INT NOT NULL,
   medicine_id INT NOT NULL,
-  recommended_num_of_units INT NOT NULL
+  recommended_num_of_units INT
 );
 
 CREATE TABLE visit_medicines(
