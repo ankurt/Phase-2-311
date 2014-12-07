@@ -1,6 +1,6 @@
 -- FUNCTIONS AND TRIGGERS FOR PATS DATABASE
 --
--- by (klouie) & (ankurt)
+-- by (klouie) & (atoshniw)
 --
 --
 -- calculate_total_costs

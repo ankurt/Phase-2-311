@@ -1,6 +1,6 @@
 -- VIEWS FOR PATS DATABASE
 --
--- by (klouie) & (ankurt)
+-- by (klouie) & (atoshniw)
 --
 --
 --owners view--

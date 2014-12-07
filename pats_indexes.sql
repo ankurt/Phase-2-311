@@ -1,6 +1,6 @@
 -- INDEXES FOR PATS DATABASE
 --
--- by (klouie) & (ankurt)
+-- by (klouie) & (atoshniw)
 --
 --
 CREATE INDEX 

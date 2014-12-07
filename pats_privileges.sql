@@ -1,6 +1,6 @@
 -- PRIVILEGES FOR pats USER OF PATS DATABASE
 --
--- by (klouie) & (ankurt)
+-- by (klouie) & (atoshniw)
 --
 --
 -- SQL needed to create the pats user

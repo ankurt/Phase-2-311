@@ -1,6 +1,6 @@
 -- CONSTRAINTS FOR PATS DATABASE
 --
--- by (klouie) & (ankurt)
+-- by (klouie) & (atoshniw)
 --
 ----FOREIGN KEYS--
 ALTER TABLE pets ADD CONSTRAINT pet_animal_fkey FOREIGN KEY(animal_id) REFERENCES animals (id) ON DELETE RESTRICT ON UPDATE CASCADE;
