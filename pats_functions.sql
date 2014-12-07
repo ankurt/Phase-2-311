@@ -6,7 +6,7 @@
 -- calculate_total_costs
 -- (associated with two triggers: update_total_costs_for_medicines_changes & update_total_costs_for_treatments_changes)
 
-CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS INT AS $$
+CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS VOID AS $$
     DECLARE
         total INT;
         medicines_cost INT;
@@ -18,22 +18,23 @@ CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS INT AS $$
                                 mc.medicine_id = m.id JOIN visit_medicines vm ON m.id = vm.medicine_id JOIN visits v ON vm.visit_id = v.id
                                 WHERE v.id = visit);
             total = procedures_cost + medicines_cost;
-            UPDATE visits SET total_charge = total;
-        RETURN total;
+            UPDATE visits SET total_charge = total WHERE visits.id = visit;
+        RETURN VOID;
     END;
 
 $$ language 'plpgsql';
 
 CREATE TRIGGER update_total_costs_for_medicines_changes
-AFTER UPDATE ON medicine_costs
-EXECUTE PROCEDURE calculate_total_costs(visits.id);
+AFTER UPDATE ON visit_medicines
+EXECUTE PROCEDURE calculate_total_costs(NEW.visit_id);
 
 CREATE TRIGGER update_total_costs_for_treatments_changes
-AFTER UPDATE ON procedure_costs
-EXECUTE PROCEDURE calculate_total_costs(visits.id);
+AFTER UPDATE ON treatments
+EXECUTE PROCEDURE calculate_total_costs(NEW.visits_id);
 
 -- calculate_overnight_stay
 -- (associated with a trigger: update_overnight_stay_flag)
+
 CREATE OR REPLACE function calculate_overnight_stay(id SERIAL) RETURNS TRIGGER AS $$
 	DECLARE
 		procedure_time INT;
@@ -52,7 +53,7 @@ CREATE OR REPLACE function calculate_overnight_stay(id SERIAL) RETURNS TRIGGER A
 $$ language 'plpgsql';
 
 CREATE TRIGGER update_overnight_stay_flag
-AFTER UPDATE ON visits
+AFTER UPDATE ON treatments
 EXECUTE PROCEDURE calculate_overnight_stay(visits.id);
 
 -- set_end_date_for_medicine_costs
@@ -100,8 +101,6 @@ END;
 
 $$ language 'plpgsql';
 
-
-
 -- verify_that_medicine_is_appropriate_for_pet
 -- (takes medicine_id and pet_id as arguments and returns a boolean)
 CREATE OR REPLACE verify_that_medicine_is_appropriate_for_pet(medicine_id SERIAL, pet_id SERIAL) RETURNS BOOLEAN AS $$
@@ -123,8 +122,3 @@ CREATE OR REPLACE verify_that_medicine_is_appropriate_for_pet(medicine_id SERIAL
 END;
 
 $$ language 'plpgsql';		
-
-
-
-
-
