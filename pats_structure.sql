@@ -18,6 +18,8 @@ CREATE TABLE owners (
 CREATE TABLE pets (
   id SERIAL NOT NULL,
   name VARCHAR(100) NOT NULL,
+  animal_id INT NOT NULL,
+  owner_id INT NOT NULL,
   female BOOLEAN NOT NULL,
   date_of_birth DATE,
   active BOOLEAN NOT NULL
@@ -25,6 +27,7 @@ CREATE TABLE pets (
 
 CREATE TABLE visits (
   id SERIAL NOT NULL,
+  pet_id INT NOT NULL,
   date DATE NOT NULL,
   weight INT,
   overnight_stay BOOLEAN NOT NULL,
@@ -49,6 +52,7 @@ CREATE TABLE medicines (
 
 CREATE TABLE medicine_costs(
   id SERIAL NOT NULL,
+  medicine_id INT NOT NULL,
   cost_per_unit INT NOT NULL,
   start_date DATE NOT NULL, 
   end_date DATE
@@ -56,6 +60,8 @@ CREATE TABLE medicine_costs(
 
 CREATE TABLE animal_medicines(
   id SERIAL NOT NULL,
+  animal_id INT NOT NULL,
+  medicine_id INT NOT NULL,
   recommended_num_of_units INT NOT NULL
 );
 
@@ -77,12 +83,15 @@ CREATE TABLE procedures(
 
 CREATE TABLE treatments(
   id SERIAL NOT NULL,
+  visit_id INT NOT NULL,
+  procedure_id INT NOT NULL,
   successful BOOLEAN,
   discount NUMERIC(3, 2) NOT NULL
 );
 
 CREATE TABLE procedure_costs(
   id SERIAL NOT NULL,
+  procedure_id INT NOT NULL,
   cost INT NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE
@@ -94,6 +103,7 @@ CREATE TABLE notes(
   notable_id INT NOT NULL,
   title VARCHAR(100) NOT NULL,
   content TEXT NOT NULL,
+  user_id INT NOT NULL,
   date DATE
 );
 

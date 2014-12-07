@@ -4,7 +4,7 @@
 --
 --
 -- SQL needed to create the pats user
-
+GRANT CREATE ON pats to pats;
 
 
 
