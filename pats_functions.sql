@@ -6,7 +6,7 @@
 -- calculate_total_costs
 -- (associated with two triggers: update_total_costs_for_medicines_changes & update_total_costs_for_treatments_changes)
 
-CREATE OR REPLACE function calculate_total_costs(visit INT) RETURNS INT AS $$
+CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS INT AS $$
     DECLARE
         total INT;
         medicines_cost INT;
@@ -69,10 +69,31 @@ EXECUTE PROCEDURE calculate_overnight_stay(visits.id);
 
 -- verify_that_medicine_requested_in_stock
 -- (takes medicine_id and units_needed as arguments and returns a boolean)
+CREATE OR REPLACE verify_that_medicine_requested_in_stock(medicine_id SERIAL, units_needed INT) RETURNS BOOLEAN AS $$
+	DECLARE
+		current_stock INT;
+	BEGIN
+		current_stock = (SELECT stock_amount FROM medicines WHERE medicines.id = medicine_id;
+	IF current_stock >= units_needed THEN
+		RETURN true;
+	ELSE
+		RETURN false;
+	END IF;
+END;
 
+$$ language 'plpgsql';
 
 
 
 -- verify_that_medicine_is_appropriate_for_pet
 -- (takes medicine_id and pet_id as arguments and returns a boolean)
+CREATE OR REPLACE verify_that_medicine_is_appropriate_for_pet(medicine_id SERIAL, pet_id SERIAL) RETURNS BOOLEAN AS $$
+	DECLARE
+
+	BEGIN
+		
+
+
+
+
 
