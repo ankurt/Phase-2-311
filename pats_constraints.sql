@@ -3,7 +3,7 @@
 -- by (klouie) & (atoshniw)
 --
 ----FOREIGN KEYS--
-ALTER TABLE pets ADD CONSTRAINT pet_animal_fkey FOREIGN KEY(animal_id) REFERENCES animals (id) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE pets ADD CONSTRAINT pet_animal_fkey FOREIGN KEY(animal_id) REFERENCES animals(id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE pets ADD CONSTRAINT pet_owner_fkey FOREIGN KEY(owner_id) REFERENCES owners (id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -24,8 +24,6 @@ ALTER TABLE treatments ADD CONSTRAINT treatment_procedure_fkey FOREIGN KEY(proce
 ALTER TABLE procedure_costs ADD CONSTRAINT procedure_costs_pid_fkey FOREIGN KEY(procedure_id) REFERENCES procedures (id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE notes ADD CONSTRAINT note_user_fkey FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE;
-
---DOMAIN CONSTRAINTS--
 
 ALTER TABLE owners ADD CONSTRAINT validate_email CHECK (email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$');
 

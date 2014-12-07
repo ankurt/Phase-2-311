@@ -55,10 +55,6 @@ CREATE TRIGGER update_overnight_stay_flag
 AFTER UPDATE ON visits
 EXECUTE PROCEDURE calculate_overnight_stay(visits.id);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 37a71fe5fa3a9e21c1597d48f195c61edaffdce8
 -- set_end_date_for_medicine_costs
 -- (associated with a trigger: set_end_date_for_previous_medicine_cost)
 
