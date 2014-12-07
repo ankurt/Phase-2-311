@@ -24,6 +24,13 @@ CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS INT AS $$
 
 $$ language 'plpgsql';
 
+CREATE TRIGGER update_total_costs_for_medicines_changes
+AFTER UPDATE ON medicine_costs
+EXECUTE PROCEDURE calculate_total_costs(visits.id);
+
+CREATE TRIGGER update_total_costs_for_treatments_changes
+AFTER UPDATE ON procedure_costs
+EXECUTE PROCEDURE calculate_total_costs(visits.id);
 
 -- calculate_overnight_stay
 -- (associated with a trigger: update_overnight_stay_flag)
@@ -48,17 +55,31 @@ CREATE TRIGGER update_overnight_stay_flag
 AFTER UPDATE ON visits
 EXECUTE PROCEDURE calculate_overnight_stay(visits.id);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 37a71fe5fa3a9e21c1597d48f195c61edaffdce8
 -- set_end_date_for_medicine_costs
 -- (associated with a trigger: set_end_date_for_previous_medicine_cost)
 
+CREATE OR REPLACE function set_end_date_for_previous_medicine_cost() RETURNS DATE AS $$
+    DECLARE
+        previous_ed DATE;
+    BEGIN
+        previous_ed = SELECT();
+        previous_ed.end_date = current_date;
+        RETURN previous_ed;
+    END;
 
+$$ language 'plpgsql';
+
+CREATE TRIGGER set_end_date_for_previous_procedure_cost
+AFTER 
+EXECUTE PROCEDURE set_end_date_for_previous_medicine_cost();
 
 
 -- set_end_date_for_procedure_costs
 -- (associated with a trigger: set_end_date_for_previous_procedure_cost)
-
-
 
 
 -- decrease_stock_amount_after_dosage
