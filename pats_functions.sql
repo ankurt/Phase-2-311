@@ -110,9 +110,23 @@ $$ language 'plpgsql';
 -- (takes medicine_id and pet_id as arguments and returns a boolean)
 CREATE OR REPLACE verify_that_medicine_is_appropriate_for_pet(medicine_id SERIAL, pet_id SERIAL) RETURNS BOOLEAN AS $$
 	DECLARE
-
+		medicine_animal VARCHAR(255);
+		pet_animal VARCHAR(255);
 	BEGIN
-		
+		medicine_animal = (SELECT animal_medicines.animal_id 
+			FROM medicines JOIN animal_medicine ON medicines.id = animal_medicines.medicine_id
+			WHERE animal_medicines.medicine_id = medicine_id);
+		pet_animal = (SELECT pets.animal_id 
+			FROM animals JOIN pets on animals.id = pets.animal_id
+			WHERE pets.animal_id = pet_id);
+		IF medicine_animal == pet_animal THEN
+			RETURN true;
+		ELSE
+			RETURN false;
+		END IF;
+END;
+
+$$ language 'plpgsql';		
 
 
 
