@@ -6,7 +6,7 @@
 -- calculate_total_costs
 -- (associated with two triggers: update_total_costs_for_medicines_changes & update_total_costs_for_treatments_changes)
 
-CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS VOID AS $$
+CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS TRIGGER AS $$
     DECLARE
         total INT;
         medicines_cost INT;
