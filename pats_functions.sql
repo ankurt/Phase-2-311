@@ -33,14 +33,14 @@ EXECUTE PROCEDURE calculate_total_costs();
 -- calculate_overnight_stay
 -- (associated with a trigger: update_overnight_stay_flag)
 
-CREATE OR REPLACE function calculate_overnight_stay(id SERIAL) RETURNS TRIGGER AS $$
+CREATE OR REPLACE function calculate_overnight_stay() RETURNS TRIGGER AS $$
 	DECLARE
 		procedure_time INT;
 	BEGIN 
 		procedure_time = (SELECT SUM(procedures.length_of_time) FROM procedures 
 			JOIN treatments ON procedures.id = treatments.procedure_id 
 			JOIN visits ON treatments.visit_id = visits.id
-			WHERE visits.id = id);
+			WHERE visits.id = NEW.visit_id);
 		IF procedure_time > 720 THEN
 			UPDATE visits SET overnight_stay = true;
 		ELSE
@@ -52,7 +52,7 @@ $$ language 'plpgsql';
 
 CREATE TRIGGER update_overnight_stay_flag
 AFTER UPDATE ON treatments
-EXECUTE PROCEDURE calculate_overnight_stay(NEW.visits_id);
+EXECUTE PROCEDURE calculate_overnight_stay();
 
 -- set_end_date_for_medicine_costs
 -- (associated with a trigger: set_end_date_for_previous_medicine_cost)
@@ -98,11 +98,11 @@ $$ language 'plpgsql';
 
 -- verify_that_medicine_requested_in_stock
 -- (takes medicine_id and units_needed as arguments and returns a boolean)
-CREATE OR REPLACE verify_that_medicine_requested_in_stock(medicine_id SERIAL, units_needed INT) RETURNS BOOLEAN AS $$
+CREATE OR REPLACE function verify_that_medicine_requested_in_stock(medicine_id INT, units_needed INT) RETURNS BOOLEAN AS $$
 	DECLARE
 		current_stock INT;
 	BEGIN
-		current_stock = (SELECT stock_amount FROM medicines WHERE medicines.id = medicine_id;
+		current_stock = (SELECT stock_amount FROM medicines WHERE medicines.id = medicine_id);
 	IF current_stock >= units_needed THEN
 		RETURN true;
 	ELSE
@@ -114,18 +114,18 @@ $$ language 'plpgsql';
 
 -- verify_that_medicine_is_appropriate_for_pet
 -- (takes medicine_id and pet_id as arguments and returns a boolean)
-CREATE OR REPLACE verify_that_medicine_is_appropriate_for_pet(medicine_id SERIAL, pet_id SERIAL) RETURNS BOOLEAN AS $$
+CREATE OR REPLACE function verify_that_medicine_is_appropriate_for_pet(medid INT, petid INT) RETURNS BOOLEAN AS $$
 	DECLARE
 		medicine_animal VARCHAR(255);
 		pet_animal VARCHAR(255);
 	BEGIN
 		medicine_animal = (SELECT animal_medicines.animal_id 
-			FROM medicines JOIN animal_medicine ON medicines.id = animal_medicines.medicine_id
-			WHERE animal_medicines.medicine_id = medicine_id);
+			FROM medicines JOIN animal_medicines ON medicines.id = animal_medicines.medicine_id
+			WHERE animal_medicines.medicine_id = medid);
 		pet_animal = (SELECT pets.animal_id 
 			FROM animals JOIN pets on animals.id = pets.animal_id
-			WHERE pets.animal_id = pet_id);
-		IF medicine_animal == pet_animal THEN
+			WHERE pets.animal_id = petid);
+		IF medicine_animal = pet_animal THEN
 			RETURN true;
 		ELSE
 			RETURN false;
