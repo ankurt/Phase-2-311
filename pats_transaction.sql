@@ -3,3 +3,7 @@
 -- by (student_1) & (student_2)
 --
 --
+
+BEGIN;
+INSERT INTO visits 
+END;

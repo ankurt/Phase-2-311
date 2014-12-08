@@ -51,7 +51,7 @@ CREATE OR REPLACE function calculate_overnight_stay() RETURNS TRIGGER AS $$
 $$ language 'plpgsql';
 
 CREATE TRIGGER update_overnight_stay_flag
-AFTER UPDATE ON treatments
+BEFORE UPDATE ON treatments
 EXECUTE PROCEDURE calculate_overnight_stay();
 
 -- set_end_date_for_medicine_costs
@@ -71,11 +71,10 @@ EXECUTE PROCEDURE set_end_date_for_previous_medicine_cost();
 -- set_end_date_for_procedure_costs
 -- (associated with a trigger: set_end_date_for_previous_procedure_cost)
 
-CREATE OR REPLACE set_end_date_for_procedure_costs() RETURNS TRIGGER AS $$
+CREATE OR REPLACE function set_end_date_for_procedure_costs() RETURNS TRIGGER AS $$
     BEGIN
         OLD.end_date = current_date;
     END;
-
 $$ language 'plpgsql';
 
 CREATE TRIGGER set_end_date_for_previous_procedure_cost
@@ -85,15 +84,20 @@ EXECUTE PROCEDURE set_end_date_for_procedure_costs();
 
 -- decrease_stock_amount_after_dosage
 -- (associated with a trigger: update_stock_amount_for_medicines)
-CREATE OR REPLACE decrease_stock_amount_after_dosage() RETURNS TRIGGER AS $$
+CREATE OR REPLACE function decrease_stock_amount_after_dosage() RETURNS TRIGGER AS $$
     DECLARE
         stock_amount INT;
+        medicine RECORD;
     BEGIN
-    stock_amount = (SELECT stock_amount FROM visit_medicines vm JOIN medicine m ON vm.medicine_id = m.id
-                    WHERE NEW.medicine_id = m.id).first;
-    IF NEW.stock_amount > 0 THEN
-        stock_amount -= OLD.units_given;
-    ELSE
+        stock_amount = (SELECT SUM(stock_amount) 
+                        FROM visit_medicines vm JOIN medicine m ON vm.medicine_id = m.id
+                        WHERE NEW.medicine_id = m.id);
+        medicine = (SELECT stock_amount
+                        FROM visit_medicines vm JOIN medicine m ON vm.medicine_id = m.id
+                        WHERE NEW.medicine_id = m.id).first;
+        IF NEW.stock_amount > 0 THEN
+            medicine.stock_amount = stock_amount - OLD.units_given;
+        END IF;
     END;
 $$ language 'plpgsql';
 
@@ -108,11 +112,7 @@ CREATE OR REPLACE function verify_that_medicine_requested_in_stock(medid INT, un
 	DECLARE
 		current_stock INT;
 	BEGIN
-<<<<<<< HEAD
-		current_stock = (SELECT stock_amount FROM medicines WHERE medicines.id = medid);
-=======
 		current_stock = (SELECT stock_amount FROM medicines WHERE medicines.id = medicine_id);
->>>>>>> e6d500c1372bee649874892ff9d5aa98984c6397
 	IF current_stock >= units_needed THEN
 		RETURN true;
 	ELSE
@@ -140,6 +140,6 @@ CREATE OR REPLACE function verify_that_medicine_is_appropriate_for_pet(medid INT
 		ELSE
 			RETURN false;
 		END IF;
-END;
+    END;
 
 $$ language 'plpgsql';	
