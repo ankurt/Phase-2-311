@@ -20,7 +20,6 @@ CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS TRIGGER A
             total = procedures_cost + medicines_cost;
             UPDATE visits SET total_charge = total WHERE visits.id = visit;
     END;
-
 $$ language 'plpgsql';
 
 CREATE TRIGGER update_total_costs_for_medicines_changes
@@ -93,7 +92,6 @@ CREATE OR REPLACE decrease_stock_amount_after_dosage() RETURNS TRIGGER AS $$
     DECLARE
     BEGIN
     END;
-
 $$ language 'plpgsql';
 
 
