@@ -19,7 +19,6 @@ CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS TRIGGER A
                                 WHERE v.id = visit);
             total = procedures_cost + medicines_cost;
             UPDATE visits SET total_charge = total WHERE visits.id = visit;
-        RETURN VOID;
     END;
 
 $$ language 'plpgsql';
