@@ -42,9 +42,9 @@ CREATE OR REPLACE function calculate_overnight_stay() RETURNS TRIGGER AS $$
 			JOIN visits ON treatments.visit_id = visits.id
 			WHERE visits.id = NEW.visit_id);
 		IF procedure_time > 720 THEN
-			UPDATE visits SET overnight_stay = true;
+			UPDATE visits SET overnight_stay = true WHERE NEW.visit_id;
 		ELSE
-			UPDATE visits SET overnight_stay = false;
+			UPDATE visits SET overnight_stay = false WHERE NEW.visit_id;
 		END IF;
 		RETURN NULL;
 	END;
@@ -58,18 +58,13 @@ EXECUTE PROCEDURE calculate_overnight_stay();
 -- (associated with a trigger: set_end_date_for_previous_medicine_cost)
 
 CREATE OR REPLACE function set_end_date_for_previous_medicine_cost() RETURNS TRIGGER AS $$
-    DECLARE
-        previous_ed DATE;
     BEGIN
-        previous_ed = SELECT();
-        previous_ed.end_date = current_date;
-        RETURN previous_ed;
+        OLD.end_date = current_date;
     END;
-
 $$ language 'plpgsql';
 
 CREATE TRIGGER set_end_date_for_previous_procedure_cost
-AFTER 
+AFTER UPDATE ON medicine_costs
 EXECUTE PROCEDURE set_end_date_for_previous_medicine_cost();
 
 
@@ -77,23 +72,34 @@ EXECUTE PROCEDURE set_end_date_for_previous_medicine_cost();
 -- (associated with a trigger: set_end_date_for_previous_procedure_cost)
 
 CREATE OR REPLACE set_end_date_for_procedure_costs() RETURNS TRIGGER AS $$
-    DECLARE
-
     BEGIN
+        OLD.end_date = current_date;
     END;
 
 $$ language 'plpgsql';
+
+CREATE TRIGGER set_end_date_for_previous_procedure_cost
+AFTER UPDATE ON procedure_costs
+EXECUTE PROCEDURE set_end_date_for_procedure_costs();
 
 
 -- decrease_stock_amount_after_dosage
 -- (associated with a trigger: update_stock_amount_for_medicines)
-
 CREATE OR REPLACE decrease_stock_amount_after_dosage() RETURNS TRIGGER AS $$
     DECLARE
+        stock_amount INT;
     BEGIN
+    stock_amount = (SELECT stock_amount FROM visit_medicines vm JOIN medicine m ON vm.medicine_id = m.id
+                    WHERE NEW.medicine_id = m.id).first;
+    IF NEW.stock_amount > 0 THEN
+        stock_amount -= OLD.units_given;
+    ELSE
     END;
 $$ language 'plpgsql';
 
+CREATE TRIGGER update_stock_amount_for_medicines
+AFTER UPDATE ON visit_medicines
+EXECUTE PROCEDURE decrease_stock_amount_after_dosage();
 
 
 -- verify_that_medicine_requested_in_stock
@@ -102,7 +108,11 @@ CREATE OR REPLACE function verify_that_medicine_requested_in_stock(medid INT, un
 	DECLARE
 		current_stock INT;
 	BEGIN
+<<<<<<< HEAD
 		current_stock = (SELECT stock_amount FROM medicines WHERE medicines.id = medid);
+=======
+		current_stock = (SELECT stock_amount FROM medicines WHERE medicines.id = medicine_id);
+>>>>>>> e6d500c1372bee649874892ff9d5aa98984c6397
 	IF current_stock >= units_needed THEN
 		RETURN true;
 	ELSE
