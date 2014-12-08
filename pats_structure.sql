@@ -3,7 +3,7 @@
 -- by atoshniw & klouie
 --
 CREATE TABLE owners (
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
   street VARCHAR(100) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE owners (
 );
 
 CREATE TABLE pets (
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   animal_id INT NOT NULL,
   owner_id INT NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE pets (
 );
 
 CREATE TABLE visits (
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   pet_id INT NOT NULL,
   date DATE NOT NULL,
   weight INT,
@@ -35,13 +35,13 @@ CREATE TABLE visits (
 );
 
 CREATE TABLE animals (
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   active BOOLEAN NOT NULL
   );
 
 CREATE TABLE medicines (
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   description TEXT NOT NULL,
   stock_amount INT NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE medicines (
 );
 
 CREATE TABLE medicine_costs(
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   medicine_id INT NOT NULL,
   cost_per_unit INT NOT NULL,
   start_date DATE NOT NULL, 
@@ -59,14 +59,14 @@ CREATE TABLE medicine_costs(
 );
 
 CREATE TABLE animal_medicines(
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   animal_id INT NOT NULL,
   medicine_id INT NOT NULL,
   recommended_num_of_units INT
 );
 
 CREATE TABLE visit_medicines(
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   visit_id INT NOT NULL,
   medicine_id INT NOT NULL,
   units_given INT NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE visit_medicines(
 );
 
 CREATE TABLE procedures(
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   description VARCHAR(255),
   length_of_time INT NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE procedures(
 );
 
 CREATE TABLE treatments(
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   visit_id INT NOT NULL,
   procedure_id INT NOT NULL,
   successful BOOLEAN,
@@ -90,7 +90,7 @@ CREATE TABLE treatments(
 );
 
 CREATE TABLE procedure_costs(
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   procedure_id INT NOT NULL,
   cost INT NOT NULL,
   start_date DATE NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE procedure_costs(
 );
 
 CREATE TABLE notes(
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   notable_type VARCHAR(100) NOT NULL,
   notable_id INT NOT NULL,
   title VARCHAR(100) NOT NULL,
@@ -108,7 +108,7 @@ CREATE TABLE notes(
 );
 
 CREATE TABLE users(
-  id SERIAL NOT NULL,
+  id SERIAL PRIMARY KEY,
   first_name VARCHAR(100) NOT NULL,
   last_name VARCHAR(100) NOT NULL,
   role VARCHAR(50) NOT NULL,

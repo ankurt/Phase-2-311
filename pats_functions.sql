@@ -6,7 +6,7 @@
 -- calculate_total_costs
 -- (associated with two triggers: update_total_costs_for_medicines_changes & update_total_costs_for_treatments_changes)
 
-CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS VOID AS $$
+CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS TRIGGER AS $$
     DECLARE
         total INT;
         medicines_cost INT;
@@ -14,7 +14,7 @@ CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS VOID AS $
     BEGIN
             procedures_cost = (SELECT SUM(pc.cost * (1 - t.discount)) FROM procedure_costs pc JOIN procedures p ON pc.procedure_id = p.id 
                                 JOIN treatments t ON p.id = t.procedure_id JOIN visits v ON t.visit_id = v.id WHERE visit.id = visit);
-            medicines_cost = (SELECT SUM(mc.cost_per_unit * vm.units_given * (1- t.discount))) FROM medicine_costs mc JOIN medicine m ON 
+            medicines_cost = (SELECT SUM(mc.cost_per_unit * vm.units_given * (1 - t.discount))) FROM medicine_costs mc JOIN medicine m ON 
                                 mc.medicine_id = m.id JOIN visit_medicines vm ON m.id = vm.medicine_id JOIN visits v ON vm.visit_id = v.id
                                 WHERE v.id = visit);
             total = procedures_cost + medicines_cost;
@@ -54,12 +54,12 @@ $$ language 'plpgsql';
 
 CREATE TRIGGER update_overnight_stay_flag
 AFTER UPDATE ON treatments
-EXECUTE PROCEDURE calculate_overnight_stay(visits.id);
+EXECUTE PROCEDURE calculate_overnight_stay(NEW.visits_id);
 
 -- set_end_date_for_medicine_costs
 -- (associated with a trigger: set_end_date_for_previous_medicine_cost)
 
-CREATE OR REPLACE function set_end_date_for_previous_medicine_cost() RETURNS DATE AS $$
+CREATE OR REPLACE function set_end_date_for_previous_medicine_cost() RETURNS TRIGGER AS $$
     DECLARE
         previous_ed DATE;
     BEGIN
@@ -78,10 +78,24 @@ EXECUTE PROCEDURE set_end_date_for_previous_medicine_cost();
 -- set_end_date_for_procedure_costs
 -- (associated with a trigger: set_end_date_for_previous_procedure_cost)
 
+CREATE OR REPLACE set_end_date_for_procedure_costs() RETURNS TRIGGER AS $$
+    DECLARE
+
+    BEGIN
+    END;
+
+$$ language 'plpgsql';
+
 
 -- decrease_stock_amount_after_dosage
 -- (associated with a trigger: update_stock_amount_for_medicines)
 
+CREATE OR REPLACE decrease_stock_amount_after_dosage() RETURNS TRIGGER AS $$
+    DECLARE
+    BEGIN
+    END;
+
+$$ language 'plpgsql';
 
 
 
