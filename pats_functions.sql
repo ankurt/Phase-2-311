@@ -98,11 +98,11 @@ $$ language 'plpgsql';
 
 -- verify_that_medicine_requested_in_stock
 -- (takes medicine_id and units_needed as arguments and returns a boolean)
-CREATE OR REPLACE function verify_that_medicine_requested_in_stock(medicine_id INT, units_needed INT) RETURNS BOOLEAN AS $$
+CREATE OR REPLACE function verify_that_medicine_requested_in_stock(medid INT, units_needed INT) RETURNS BOOLEAN AS $$
 	DECLARE
 		current_stock INT;
 	BEGIN
-		current_stock = (SELECT stock_amount FROM medicines WHERE medicines.id = medicine_id);
+		current_stock = (SELECT stock_amount FROM medicines WHERE medicines.id = medid);
 	IF current_stock >= units_needed THEN
 		RETURN true;
 	ELSE
@@ -132,4 +132,4 @@ CREATE OR REPLACE function verify_that_medicine_is_appropriate_for_pet(medid INT
 		END IF;
 END;
 
-$$ language 'plpgsql';		
+$$ language 'plpgsql';	
