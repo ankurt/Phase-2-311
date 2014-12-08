@@ -6,29 +6,29 @@
 -- calculate_total_costs
 -- (associated with two triggers: update_total_costs_for_medicines_changes & update_total_costs_for_treatments_changes)
 
-CREATE OR REPLACE function calculate_total_costs(visit SERIAL) RETURNS TRIGGER AS $$
+CREATE OR REPLACE function calculate_total_costs() RETURNS TRIGGER AS $$
     DECLARE
         total INT;
         medicines_cost INT;
         procedures_cost INT;
     BEGIN
             procedures_cost = (SELECT SUM(pc.cost * (1 - t.discount)) FROM procedure_costs pc JOIN procedures p ON pc.procedure_id = p.id 
-                                JOIN treatments t ON p.id = t.procedure_id JOIN visits v ON t.visit_id = v.id WHERE visit.id = visit);
-            medicines_cost = (SELECT SUM(mc.cost_per_unit * vm.units_given * (1 - t.discount))) FROM medicine_costs mc JOIN medicine m ON 
+                                JOIN treatments t ON p.id = t.procedure_id JOIN visits v ON t.visit_id = v.id WHERE visit.id = NEW.visit_id);
+            medicines_cost = (SELECT SUM(mc.cost_per_unit * vm.units_given * (1 - t.discount)) FROM medicine_costs mc JOIN medicine m ON 
                                 mc.medicine_id = m.id JOIN visit_medicines vm ON m.id = vm.medicine_id JOIN visits v ON vm.visit_id = v.id
-                                WHERE v.id = visit);
+                                WHERE v.id = NEW.visit_id);
             total = procedures_cost + medicines_cost;
-            UPDATE visits SET total_charge = total WHERE visits.id = visit;
+            UPDATE visits SET total_charge = total WHERE visits.id = NEW.visit_id;
     END;
 $$ language 'plpgsql';
 
 CREATE TRIGGER update_total_costs_for_medicines_changes
 AFTER UPDATE ON visit_medicines
-EXECUTE PROCEDURE calculate_total_costs(NEW.visit_id);
+EXECUTE PROCEDURE calculate_total_costs();
 
 CREATE TRIGGER update_total_costs_for_treatments_changes
 AFTER UPDATE ON treatments
-EXECUTE PROCEDURE calculate_total_costs(NEW.visits_id);
+EXECUTE PROCEDURE calculate_total_costs();
 
 -- calculate_overnight_stay
 -- (associated with a trigger: update_overnight_stay_flag)

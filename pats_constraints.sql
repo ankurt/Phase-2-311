@@ -25,6 +25,7 @@ ALTER TABLE procedure_costs ADD CONSTRAINT procedure_costs_pid_fkey FOREIGN KEY(
 
 ALTER TABLE notes ADD CONSTRAINT note_user_fkey FOREIGN KEY(user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE;
 
+----DOMAIN CONSTRAINTS--
 ALTER TABLE owners ADD CONSTRAINT validate_email CHECK (email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$');
 
 ALTER TABLE owners ADD CONSTRAINT validate_phone CHECK (phone ~* '/\A(\d{10}|\(?\d{3}\)?[-. ]\d{3}[-.]\d{4})\z/'); 
