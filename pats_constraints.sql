@@ -29,13 +29,13 @@ ALTER TABLE owners ADD CONSTRAINT validate_email CHECK (email ~* '^[A-Za-z0-9._%
 
 ALTER TABLE owners ADD CONSTRAINT validate_phone CHECK (phone ~* '/\A(\d{10}|\(?\d{3}\)?[-. ]\d{3}[-.]\d{4})\z/'); 
 
-ALTER TABLE pets ADD CONSTRAINT validate_birthday CHECK (date_of_birth <= DATE.current);
+ALTER TABLE pets ADD CONSTRAINT validate_birthday CHECK (date_of_birth <= current_date);
 
-ALTER TABLE visits ADD CONSTRAINT validate_date CHECK (date <= DATE.current);
+ALTER TABLE visits ADD CONSTRAINT validate_date CHECK (date <= current_date);
 
 ALTER TABLE visits ADD CONSTRAINT validate_weight CHECK (weight > 0);
 
-ALTER TABLE medicine_costs ADD CONSTRAINT validate_start_date CHECK (start_date <= DATE.current);
+ALTER TABLE medicine_costs ADD CONSTRAINT validate_start_date CHECK (start_date <= current_date);
 
 ALTER TABLE medicine_costs ADD CONSTRAINT validate_cost_per_unit CHECK (cost_per_unit >= 0);
 
